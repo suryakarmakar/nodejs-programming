@@ -41,3 +41,19 @@ and of course, I will teach you all of that for expressjs in this module. So exp
 
 app.use((req, res, next) => {})
 this function you're passing is receiving yet another function here on the next argument and this next argument, basically this function you're receiving here has to be executed to allow the request to travel on to the next middleware.
+
+[+] res.send()
+but instead of doing this, there is a new utility function we can use, send. Send allows us to send well a response and actually this allows us to attach a body which is of type any,
+you can still set one manually with set header of course, so you can always override this expressjs
+
+[+]
+app.use("/home", (req, res, next) => {
+res.send(`<h1>Home Screen</h1>`);
+});
+and this is how we can use that middleware approach to control what is getting shown and the order here as well as the fact whether we are calling next or not matters a lot.
+
+if you are sending a response, this is a good indication that you never want to call next too becaus you don't want to execute any other response related code just as before with vanilla nodejs, you don't want to send more than on response, this won't work and will result in an error.
+
+[+] body-parser
+parsing the req body
+app.use(bodyParser.urlencoded({ extended: false }));
