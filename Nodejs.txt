@@ -1,0 +1,22 @@
+What is nodejs ?
+
+NodeJS is a JavaScript Runtime built on Google's open-source V8 JavaScript engine.
+
+V8 engine can help us to compile javascript code out side of the browser. now that we have JavaScript 
+outside of the browser in a kind of stand alone environment which just NodeJS,
+
+Node applications are so fast and so scalable because NodeJS is single threaded based on an event driven,
+non-blocking I/O model which makes NodeJS very lightweight and efficient.
+
+NOTE - But, there is actually, also, a type of apps that we should not build with Node. And this is when 
+our app needs some super heavy server-side processing like having image manipulations, video conversion,
+file compression or anything like that.
+
+
+the biggest one is probably that using the same language across your entire stack both on the front-end 
+and the back-end is a lot easier for you or for your team.
+
+And another great reason for using Node is that there is a huge library of open-source packages
+or modules, It's called NPM and you've probably heard of it or even used it already.
+
+
