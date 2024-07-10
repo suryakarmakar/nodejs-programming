@@ -1,7 +1,7 @@
 /* calling this function here with this built-in FS module name will then return an object in which there are lots of functions that we 
 can use. using this module we can read and write files and many more
 */
-// const fs = require("fs");
+const fs = require("fs");
 
 /* synchronous -  each statement is basically processed one after another, line by line. this is also called a blocking code */
 
@@ -24,7 +24,7 @@ also take 2 argument first one is for erro,r in case there was any and the secon
 note - the error is usually always the first one and then the data.
 */
 
-// fs.readFile("text.txt", "utf8", (error, data) => {
+// fs.readFile("writeFile.txt", "utf8", (error, data) => {
 //   console.log(data);
 // });
 
@@ -52,28 +52,47 @@ const url = require("url");
 and this callback function gets access to two very important and fundamental variables. It is the request variable, and a 
 response variable */
 
+/* the top level code actually only gets executed once right in the beginning. but this createServer executed each time
+that there is a new request, but not a code that's out here.*/
+const productsJsonData = fs.readFileSync("data.json", "utf8");
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
   // we can add routing like this
-  if (pathName === "/" || pathName === "/home") {
-    res.writeHead(200, {
-      "Content-Type": "text/html",
-    });
-    res.write("<h1>Welcome to node js server</h1>");
-    res.end();
-  } else if (pathName === "/product") {
-    res.writeHead(200, {
-      "Content-Type": "text/html",
-    });
-    res.write("<h1>Product page</h1>");
-    res.end();
-  } else {
+  // if (pathName === "/" || pathName === "/home") {
+  //   res.writeHead(200, {
+  //     "Content-Type": "text/html",
+  //   });
+  //   res.write("<h1>Welcome to node js server</h1>");
+  //   res.end();
+  // } else if (pathName === "/product") {
+  //   res.writeHead(200, {
+  //     "Content-Type": "text/html",
+  //   });
+  //   res.write("<h1>Product page</h1>");
+  //   res.end();
+  // } else {
+  //   res.writeHead(404, {
+  //     "Content-Type": "text/html",
+  //   });
+  //   res.write("<h1>404, page not found!</h1>");
+  //   res.end();
+  // }
+
+  // if you have nested folder then use __dirname insted of ./
+  if (pathName === "/api/v1/products") {
+    // fs.readFile("data.json", "utf8", (error, data) => {
+    //   res.writeHead(404, {
+    //     "Content-Type": "application/json",
+    //   });
+    //   res.end(data);
+    // });
+
     res.writeHead(404, {
-      "Content-Type": "text/html",
+      "Content-Type": "application/json",
     });
-    res.write("<h1>404, page not found!</h1>");
-    res.end();
+    res.end(productsJsonData);
   }
 });
 
