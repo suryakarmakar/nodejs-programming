@@ -1,4 +1,4 @@
-What is nodejs ?
+## What is nodejs ?
 
 NodeJS is a JavaScript Runtime built on Google's open-source V8 JavaScript engine.
 
@@ -20,3 +20,10 @@ And another great reason for using Node is that there is a huge library of open-
 or modules, It's called NPM and you've probably heard of it or even used it already.
 
 
+## package.json file 
+
+1. ^ this denote only update and accept the minor verson. `
+2. ~ this only update patchs of that package.
+
+To check is any package get outdated or need to update or not then run this command.
+> npm outdated
