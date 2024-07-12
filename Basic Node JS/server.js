@@ -48,6 +48,8 @@ note - the error is usually always the first one and then the data.
 const http = require('http');
 const url = require('url');
 
+// importing our own module
+const sendResponce = require('./sendResponce');
 /* create server will accept a callback function, which will be fired off each time a new request hits our server. 
 and this callback function gets access to two very important and fundamental variables. It is the request variable, and a 
 response variable */
@@ -97,11 +99,12 @@ const server = http.createServer((req, res) => {
     });
 
     res.end(
-      JSON.stringify({
-        data: parseProductsJsonData,
-        error: '',
-        message: 'products get successfully',
-      })
+      sendResponce(parseProductsJsonData, '', 'products get successfully')
+      // JSON.stringify({
+      //   data: parseProductsJsonData,
+      //   error: '',
+      //   message: 'products get successfully',
+      // })
     );
   } else if (pathname === '/api/product') {
     const productdata = parseProductsJsonData[query._id];
@@ -111,19 +114,21 @@ const server = http.createServer((req, res) => {
 
     if (productdata) {
       res.end(
-        JSON.stringify({
-          data: productdata,
-          error: '',
-          message: 'products get successfully',
-        })
+        sendResponce(productdata, '', 'products get successfully')
+        // JSON.stringify({
+        //   data: productdata,
+        //   error: '',
+        //   message: 'products get successfully',
+        // })
       );
     } else {
       res.end(
-        JSON.stringify({
-          data: [],
-          error: '',
-          message: 'product not found',
-        })
+        sendResponce([], '', 'product not found')
+        // JSON.stringify({
+        //   data: [],
+        //   error: '',
+        //   message: 'product not found',
+        // })
       );
     }
   }
