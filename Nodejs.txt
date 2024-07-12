@@ -22,8 +22,63 @@ or modules, It's called NPM and you've probably heard of it or even used it alre
 
 ## package.json file 
 
-1. ^ this denote only update and accept the minor verson. `
+1. ^ this denote only update and accept the minor version. `
 2. ~ this only update patchs of that package.
 
 To check is any package get outdated or need to update or not then run this command.
 > npm outdated
+
+## V8 : writen by c++ besides js
+
+the V8 engine is what converts JavaScript code into machine code that a computer can actually understand.
+
+## Libuv : writen by c++
+
+libuv is an open source library with a strong focus on asynchronous IO. So, input output. This layer is what gives Node access to the
+underlying computer operating system, file system, networking, and more.
+
+Besides that, libuv also implements two extremely important features of Node.JS which are the event loop and also the thread pool.
+
+the event loop is responsible for handling easy tasks like executing call backs and network IO while the thread pool is for more heavy work
+like file access or compression or something like that.
+
+## Thread Pool:
+1. additional 4 threads or more
+2. offload work from the event loop
+3. handle heavy and expensive tasks like file uplaod, compression, DBS lookup executing
+
+## Event Loop:
+
+            |--> [Start]
+            |        |
+        yes |    [Expired timer callbacks]
+            |        |
+            |    [I/O polling and callbacks]
+ [Exit]<----|        |
+         no |    [setImmediate callbacks]
+            |        |
+            |    [close callbacks]
+            |        |
+            <---------
+
+1. dont use sync version of funcations in fs, crypto and zlib modules in your callback funcations
+2. dont perform complex calculations e.g. loops inside loops
+3. be careful with JSON in large objects
+4. dont use too complex regular expressions
+
+## Single Thread:
+
+[Initialize program]
+    |
+[Execute top-lavel code]
+    |
+[Require modules]
+    |
+[Register event callbacks]
+    |
+[Start event loop] 
+
+## Event 
+
+## Event-Driven architecture
+
