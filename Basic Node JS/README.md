@@ -92,3 +92,11 @@ like file access or compression or something like that.
         |
     [Start event loop]
 ```
+
+## What is Express and why we use it?
+
+1. express is a minimal node js framework, a higher level of abstraction
+2. express contains very robust set of features like complex routing, easier handling of requests and responses, middleware,
+   server-side rendering etc.
+3. express allows for ratid development of node js applications.
+4. express makes it easier to organize our application onto the MVC architecture.
