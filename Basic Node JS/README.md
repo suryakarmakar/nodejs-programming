@@ -48,6 +48,8 @@ Besides that, libuv also implements two extremely important features of Node.JS 
 the event loop is responsible for handling easy tasks like executing call backs and network IO while the thread pool is for more heavy work
 like file access or compression or something like that.
 
+## Processes:
+
 ## Threads:
 
 ## Thread Pool:
