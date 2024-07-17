@@ -195,3 +195,68 @@ wrapping the data into an additional object like we did here is called Envelopin
 5. Be stateless - a RESTful API should always be stateless. So, what does stateless actually mean? Well, in a stateless RESTful API, all state is handled on the client and not on the server. And state simply refers to a piece of data in the application that might change over time.
 
 Let's take the list with several pages as an example. And let's say that recurrently on page five and want to move forward to page six. So we could have a simple endpoint called /tours/nextPage and submit a request to it, right? But the server would then have to figure out what the current page is and based on that send the next page to the client. In other words, the server would have to remember the previous request. It would have to handle the state server side and that is exactly what we want to avoid in RESTful APIs, okay? Instead, in this case, we should create a /tours/page endpoint and paste the number six to it in order to request page number six. This way, we would then state on the client because on a client, we would already know that we're on page five and so all we had to do is to just add one and then request page number six. So the server doesn't have to remember anything in this case. All it has to do is to send back data for page number six as we requested. And by the way, statelessness and statefulness, which is the opposite, are very important concepts in computer science and application design in general. So, it's a good idea to actually have some understanding what a stateless API is and how it works.
+
+## Middleware:
+
+Middleware functions are functions that have access to the request object (req), the response object (res), and the next function in the application’s request-response cycle. The next function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
+
+It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
+
+- bodyParser.json() vs express.json()
+
+Node/Express Framework has been used to install another piece of middleware in order for us to be able to read the “body” of an incoming JSON object. This piece of middleware was called body-parser and used to not be part of the Express framework.
+When Express 4.0 was released they decided to remove the bundled middleware from Express and make them separate packages instead. The syntax then changed from app.use(express.json()) to app.use(bodyParser.json()) after installing the body-parser module.
+
+```
+// calling body-parser to handle the Request Object from POST requests
+const bodyParser = require('body-parser');
+
+// parse application/json, basically parse incoming Request Object as a JSON Object
+app.use(bodyParser.json());
+
+// parse application/x-www-form-urlencoded, basically can only parse incoming Request Object if strings or arrays
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// combines the 2 above, then you can parse incoming Request Object if object, with nested objects, or generally any type.
+app.use(bodyParser.urlencoded({ extended: true }));
+```
+
+body-parser was added back to Express in release 4.16.0. That means you don’t have to use bodyParser.json() anymore if you are on the latest release. You can use express.json() instead. Their own body-parser implementation is now included in the default Express package so there is no need for you to download another dependency.
+
+```
+// parse application/json, basically parse incoming Request Object as a JSON Object
+app.use(express.json());
+
+// parse application/x-www-form-urlencoded, basically can only parse incoming Request Object if strings or arrays
+app.use(express.urlencoded({ extended: false }));
+
+// parse incoming Request Object if object, with nested objects, or generally any type.
+app.use(express.urlencoded({ extended: true }));
+```
+
+express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object. This method is called as a middleware in your application using the code: app.use(express.json());
+
+express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays. This method is called as a middleware in your application using the code: app.use(express.urlencoded());
+
+## req.query and req.params
+
+Req.params and req.query are like special notes attached to the web address (URL). They help the server understand what you want and respond accordingly. Req.params identifies specific details in the URL, while req.query adds extra instructions, like search criteria, to your request.
+
+Take a look at the URL below:
+
+/netflix/movies?name=TheNotebook&year=2004
+
+/movies -> req.params
+
+name=TheNotebook&year=2004 -> req.query
+
+- req.params:
+
+1. Resembles a subway station, just for your data
+2. Prefixed with a colon(:) when writing routes
+
+- req.query:
+
+1. Used for searching, and sorting (for example, the user wants to get information on the Disney movies released after the 2010s)
+2. Presented as key-value pairs
+3. Written after a question mark(?)
