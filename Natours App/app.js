@@ -22,8 +22,7 @@ like "/about" can be use as a get and post at the same time and execution is dep
 in the callback we can access request and responce object.
 */
 
-// server root route
-app.get('/', (req, res) => {
+const rootServer = (req, res) => {
   // we can send status code using res.status
   // express automatically detect the data and set a header for us. in this case it set "Content-Type: text/html"
   // res.status(200).send('<h1>hello from the server</h1>');
@@ -32,10 +31,9 @@ app.get('/', (req, res) => {
   res.status(200).json({
     message: `Server is running on http://${HOST}:${PORT}`,
   });
-});
+};
 
-// fetch all tours data
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'toures data get successfully',
@@ -44,16 +42,15 @@ app.get('/api/v1/tours', (req, res) => {
       tours: toursListData,
     },
   });
-});
+};
 
-// fetch single tour data
-app.get('/api/v1/tours/:id', (req, res) => {
+const getSingleTour = (req, res) => {
   // we cant pass query on same route name, we have already define '/api/v1/tours' exact route for fetch all route data. so here we have to use parames or use diffirente route
   // const { query, pathname } = url.parse(req.url, true);
 
   // if you want to make some params optional then use question mark after param name like this, /:id?/:name?. other wise if you define params but never send a value then you get a error.
-  const tourID = req.params.id;
-  const singleTour = toursListData[tourID];
+  const tourID = Number(req.params.id);
+  const singleTour = toursListData.find((item) => item.id === tourID);
 
   if (!singleTour)
     return res.status(404).json({
@@ -70,10 +67,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tours: singleTour,
     },
   });
-});
+};
 
-// create new tour
-app.post('/api/v1/tours', (req, res) => {
+const createNewTour = (req, res) => {
   const createID = toursListData[toursListData.length - 1].id + 1;
   const bodyData = req.body;
   const allToursData = toursListData;
@@ -108,15 +104,14 @@ app.post('/api/v1/tours', (req, res) => {
         });
     }
   );
-});
+};
 
-// update tours field value
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   const tourID = Number(req.params.id);
+  const singleTour = toursListData.find((item) => item.id === tourID);
   const bodyData = req.body;
-  const isExistingTour = toursListData[tourID];
 
-  if (!isExistingTour)
+  if (!singleTour)
     return res.status(404).json({
       status: 'error',
       message: 'data not found',
@@ -153,7 +148,63 @@ app.patch('/api/v1/tours/:id', (req, res) => {
         });
     }
   );
-});
+};
+
+const deleteTour = (req, res) => {
+  const tourID = Number(req.params.id);
+  const singleTour = toursListData.find((item) => item.id === tourID);
+
+  if (!singleTour)
+    return res.status(404).json({
+      status: 'error',
+      message: 'data not found',
+      data: {},
+    });
+
+  const updateArray = toursListData.filter((item) => {
+    if (tourID !== item.id) return item;
+  });
+
+  fs.writeFile(
+    `${__dirname}/localData/tours-simple.json`,
+    JSON.stringify(updateArray),
+    (error) => {
+      if (error)
+        res.status(404).json({
+          status: 'error',
+          message: 'data not deleted',
+          data: {},
+        });
+      else
+        res.status(200).json({
+          status: 'success',
+          message: 'data deleted successfully',
+          data: {
+            results: updateArray.length,
+            tours: updateArray,
+          },
+        });
+    }
+  );
+};
+
+// server root route
+app.get('/', rootServer);
+
+// fetch all tours data
+app.get('/api/v1/tours', getAllTours);
+
+// fetch single tour data
+app.get('/api/v1/tours/:id', getSingleTour);
+
+// create new tour
+app.post('/api/v1/tours', createNewTour);
+
+// update tours field value
+app.patch('/api/v1/tours/:id', updateTour);
+
+// delete tour
+app.delete('/api/v1/tours/:id', deleteTour);
 
 // listen useed for listen to the server request, its takes host ip and port number to start the server.
 app.listen(PORT, HOST, () => {
