@@ -79,6 +79,19 @@ like file access or compression or something like that.
 3. be careful with JSON in large objects
 4. dont use too complex regular expressions
 
+## Event-driven architecture:
+
+So most of Node's core modules, like the ones we already used, like HTTP, File System, and Timers are built around an event-driven architecture.
+
+[Event emitter] -> [Event listener] -> [Attached callback funcation]
+
+1. Node, there are certain objects called event emitters that emit named events as soon as something important happens in the app, like a request hitting server, or a timer expiring, or a file finishing to read.
+
+2. These events can then be picked up by event listeners that we developers set up, which will fire off
+callback functions that are attached to each listener, okay.
+
+So again, on one hand, we have event emitters, and on the other hand event listeners that will react to emitted events by calling callback function.
+
 ## Single Thread:
 
 ```
