@@ -36,9 +36,11 @@ const receiveBody = (req, res) => {
     });
 
     req.on("end", () => {
+      const parsed = JSON.parse(body);
+
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify({ received: body }));
+      res.end(JSON.stringify({ received: parsed }));
     });
   } else {
     res.statusCode = 404;

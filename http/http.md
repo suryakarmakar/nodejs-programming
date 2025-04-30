@@ -173,6 +173,47 @@ This is how low-level the HTTP module is—nothing is abstracted unless you use 
 
 The http module is built on top of Node.js streams and events, so it's incredibly efficient and scalable, even though it’s a bit verbose for everyday use.
 
+## req.on():
+
+req.on() is used to listen for events related to the incoming request data. Since HTTP requests in Node.js are streams, you can listen for different events to handle data as it arrives.
+
+1. data: Fired when a chunk of data is received from the client. Useful for reading large POST bodies or streams.
+2. end: Fired when the entire body of the request has been received. This marks the end of the data stream and signals you can process the full body.
+3. error: Fired if an error occurs while receiving the request. It’s good practice to handle this in case there are issues with data transmission.
+
+```js
+const server = http.createServer((req, res) => {
+  if (req.method === "POST") {
+    let body = ""; // Initialize an empty string to store the incoming data
+
+    // Listen for data chunks
+    req.on("data", (chunk) => {
+      body += chunk; // Append each chunk to the body string
+    });
+
+    // Once all data is received, process it
+    req.on("end", () => {
+      console.log("Received body:", body); // Log the full request body
+
+      const parsed = JSON.parse(body); // Parse the body if it's JSON
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ received: parsed })); // Send a JSON response
+    });
+
+    // Handle errors
+    req.on("error", (err) => {
+      console.error("Request error:", err);
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal Server Error");
+    });
+  }
+});
+```
+
+- Why req.on() Is Important:
+
+Node.js is designed to be non-blocking and event-driven, so you can handle incoming HTTP requests efficiently, even when the client sends data in pieces. Using req.on('data') and req.on('end') allows you to handle these events properly without waiting for everything to arrive before starting to process the data. This is key for performance in production environments.
+
 ## Importent Questions:
 
 - Why use "node:http" instead of 'http' ?
